@@ -6,7 +6,7 @@ export const lazyPlugin = {
             mounted(el, binding) {
                 //el:指令绑定的哪个元素 img
                 //binding：binding.value 指令等于号后面绑定
-                console.log(el, binding.value);
+                //console.log(el, binding.value);
                 const { stop } = useIntersectionObserver(
                     el,
                     ([{ isIntersecting }]) => {
