@@ -5,8 +5,6 @@ import { useCategoryStore } from '@/stores/category'
 const {y} =useScroll(window)
 
 const categoryStore=useCategoryStore()
-
-
 </script>
 
 <template>
@@ -19,7 +17,7 @@ const categoryStore=useCategoryStore()
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
-          <RouterLink active-class="active" :to="`/category/${item.id}}`">{{ item.name }}</RouterLink>
+          <RouterLink active-class="active" :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
         </li>
       </ul>
 
