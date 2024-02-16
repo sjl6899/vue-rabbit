@@ -1,6 +1,19 @@
 <script setup>
-import {useUserStore} from '@/stores/user'
-const useStore =useUserStore()
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router';
+const userStore = useUserStore()
+
+const router = useRouter()
+
+const confirm = () => {
+  console.log('用户要退出登录了')
+  // 退出登录业务逻辑实现
+  // 1.清除用户信息 触发action
+  userStore.clearUserInfo()
+  // 2.跳转到登录页
+  router.push('/login')
+}
+
 
 </script>
 
@@ -9,10 +22,10 @@ const useStore =useUserStore()
     <div class="container">
       <ul>
         <!-- 根据是否有token 适配模板 -->
-        <template v-if="useStore.userInfo.token">
-          <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{ useStore.userInfo.account }}</a></li>
+        <template v-if="userStore.userInfo.token">
+          <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{ userStore.userInfo.account }}</a></li>
           <li>
-            <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
+            <el-popconfirm @confirm="confirm" title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消">
               <template #reference>
                 <a href="javascript:;">退出登录</a>
               </template>
@@ -35,11 +48,13 @@ const useStore =useUserStore()
 <style scoped lang="scss">
 .app-topnav {
   background: #333;
+
   ul {
     display: flex;
     height: 53px;
     justify-content: flex-end;
     align-items: center;
+
     li {
       a {
         padding: 0 15px;
