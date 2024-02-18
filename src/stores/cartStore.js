@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useUserStore } from './user'
+import { useUserStore } from './userStore'
 import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 export const useCartStore = defineStore('cart', () => {
   const userStore = useUserStore()
@@ -13,8 +13,7 @@ export const useCartStore = defineStore('cart', () => {
     if (isLogin.value) {
       //登录之后加入购物车逻辑 调接口
       await insertCartAPI({ skuId, count })
-      const res = await findNewCartListAPI()
-      cartList.value = res.result
+      updateNewList()
     } else {
       //没有登录 走本地逻辑
       console.log('添加', goods)
@@ -35,10 +34,17 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   //删除购物车数据 action
-  const delCart = (skuId) => {
-    //1.找到下标值 - splice
-    const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-    cartList.value.splice(idx, 1)
+  const delCart = async (skuId) => {
+    if (isLogin.value) {
+      //调接口
+      await delCartAPI([skuId])
+      updateNewList()
+    } else {
+      //1.找到下标值 - splice
+      const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+      cartList.value.splice(idx, 1)
+    }
+
   }
 
   //单选功能
@@ -50,6 +56,12 @@ export const useCartStore = defineStore('cart', () => {
   //全选功能
   const allCheck = (selected) => {
     cartList.value.forEach((item) => item.selected = selected)
+  }
+
+  //获取最新购物车列表
+  const updateNewList =async () => {
+    const res = await findNewCartListAPI()
+    cartList.value = res.result
   }
 
   //计算属性

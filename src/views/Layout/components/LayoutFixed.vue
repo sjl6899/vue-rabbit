@@ -1,7 +1,7 @@
 <script setup>
 import { useScroll } from '@vueuse/core'
 //使用pinia数据
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 const {y} =useScroll(window)
 
 const categoryStore=useCategoryStore()
@@ -114,4 +114,4 @@ const categoryStore=useCategoryStore()
     }
   }
 }
-</style>
+</style>@/stores/categoryStore
