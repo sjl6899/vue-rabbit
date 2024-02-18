@@ -1,23 +1,53 @@
 <script setup>
 import { getDetail } from '@/apis/detail'
+import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useCartStore } from '@/stores/cartStore';
 import DetailHot from './components/DetailHot.vue'
 const goods = ref({})
 const route = useRoute()
+const cartStore = useCartStore()
 
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result
 }
 
-onMounted(()=>getGoods())
+onMounted(() => getGoods())
 
 //sku规格被操作时
-const skuChange=(sku)=>{
+let skuObj = {}
+const skuChange = (sku) => {
   console.log(sku);
+  skuObj = sku
 }
 
+//count
+const count = ref(1)
+const countChange = (count) => {
+  console.log(count);
+}
+
+//添加购物车 
+const addCart = () => {
+  if (skuObj.skuId) {
+    //规则已经选择全 触发 action
+    cartStore.addCart({
+      id: goods.value.id,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: goods.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,
+      selected: true
+    })
+  } else {
+    //没有选全 提示用户
+    ElMessage.warning('请选择规格')
+  }
+}
 
 </script>
 
@@ -32,9 +62,9 @@ const skuChange=(sku)=>{
             1.可选链的语法 ?.
             2.v-if 判断
            -->
-          <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{goods.categories[1].name}}
+          <el-breadcrumb-item :to="{ path: `/category/${goods.categories[1].id}` }">{{ goods.categories[1].name }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{goods.categories[0].name}}
+          <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories[0].id}` }">{{ goods.categories[0].name }}
           </el-breadcrumb-item>
           <el-breadcrumb-item>{{ goods.name }}</el-breadcrumb-item>
         </el-breadcrumb>
@@ -94,12 +124,12 @@ const skuChange=(sku)=>{
                 </dl>
               </div>
               <!-- sku组件 -->
-              <XtxSku :goods="goods" @change="skuChange"/>
+              <XtxSku :goods="goods" @change="skuChange" />
               <!-- 数据组件 -->
-
+              <el-input-number v-model="count" @change="countChange" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>
@@ -117,8 +147,8 @@ const skuChange=(sku)=>{
                   <!-- 属性 -->
                   <ul class="attrs">
                     <li v-for="item in goods.details.properties" :key="item.value">
-                      <span class="dt">{{item.name}}</span>
-                      <span class="dd">{{item.value}}</span>
+                      <span class="dt">{{ item.name }}</span>
+                      <span class="dd">{{ item.value }}</span>
                     </li>
                   </ul>
                   <!-- 图片 -->
