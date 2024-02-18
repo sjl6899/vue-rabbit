@@ -59,9 +59,14 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   //获取最新购物车列表
-  const updateNewList =async () => {
+  const updateNewList = async () => {
     const res = await findNewCartListAPI()
     cartList.value = res.result
+  }
+
+  //清空购物车
+  const clearCart = () => {
+    cartList.value = []
   }
 
   //计算属性
@@ -87,7 +92,8 @@ export const useCartStore = defineStore('cart', () => {
     isAll,
     allCheck,
     selectedCount,
-    selectedPrice
+    selectedPrice,
+    clearCart
   }
 }, {
   persist: true
