@@ -14,16 +14,24 @@ export const useCartStore = defineStore('cart', () => {
     const item = cartList.value.find((item) => goods.skuId === item.skuId)
     if (item) {
       // 找到了
-      item.count+=goods.count
+      item.count += goods.count
     } else {
       // 没找到
       cartList.value.push(goods)
     }
   }
+
+  //删除购物车数据 action
+  const delCart = (skuId) => {
+    //1.找到下标值 - splice
+    const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+    cartList.value.splice(idx, 1)
+  }
   return {
     cartList,
-    addCart
+    addCart,
+    delCart
   }
-},{
-  persist:true
+}, {
+  persist: true
 })
