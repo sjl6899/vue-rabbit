@@ -14,7 +14,7 @@ export const useCartStore = defineStore('cart', () => {
     const item = cartList.value.find((item) => goods.skuId === item.skuId)
     if (item) {
       // 找到了
-      item.count++
+      item.count+=goods.count
     } else {
       // 没找到
       cartList.value.push(goods)
