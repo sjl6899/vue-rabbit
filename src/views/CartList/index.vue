@@ -6,6 +6,13 @@ const singleSelect = (i, selected) => {
   console.log(i, selected)
   cartStore.singleCheck(i.skuId, selected)
 }
+
+//全选 反全选
+const allCheck = (selected) =>{
+  console.log(selected);
+  cartStore.allCheck(selected)
+}
+
 </script>
 
 <template>
@@ -16,7 +23,7 @@ const singleSelect = (i, selected) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <el-checkbox :model-value="cartStore.isAll" @change="(selected)=>allCheck(selected)"/>
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
