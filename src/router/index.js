@@ -10,6 +10,8 @@ import Detail from '@/views/Detail/index.vue'
 import CartList from '@/views/CartList/index.vue'
 import Checkout from '@/views/Checkout/index.vue'
 import Pay from '@/views/Pay/index.vue'
+import PayBack from '@/views/PayBack/index.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   //path 和 component对应关系位置
@@ -31,19 +33,23 @@ const router = createRouter({
           component: SubCategory
         },
         {
-          path:'detail/:id',
-          component:Detail
+          path: 'detail/:id',
+          component: Detail
         },
         {
-          path:'cartlist',
-          component:CartList
+          path: 'cartlist',
+          component: CartList
         },
         {
-          path:'checkout',
-          component:Checkout
-        },{
-          path:'pay',
-          component:Pay
+          path: 'checkout',
+          component: Checkout
+        }, {
+          path: 'pay',
+          component: Pay
+        },
+        {
+          path: 'paycallback',
+          component: PayBack
         }
       ]
     },
