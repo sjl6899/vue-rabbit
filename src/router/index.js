@@ -59,7 +59,7 @@ const router = createRouter({
           component:Member,
           children:[
             {
-              path:'user',
+              path: '', // 置空path
               component:UserInfo
             },
             {
